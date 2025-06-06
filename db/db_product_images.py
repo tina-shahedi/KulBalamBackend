@@ -10,7 +10,7 @@ def upload_product_image(db: Session, product_id: int, image: UploadFile = File(
     product = db.query(DbProduct).filter(DbProduct.id == product_id).first()
     if not product:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Product with id '{product_id}' not found")
+            detail=f"Product with id {product_id} not found")
 
     letters = string.ascii_letters
     rand_str = ''.join(random.choice(letters) for i in range(6)) #Generates 6 random letters for img name
@@ -35,14 +35,14 @@ def get_product_image(db: Session, id: int):
     if not product_image:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Image with id '{id}' not found."
+            detail=f"Image with id {id} not found."
         )
     return FileResponse(product_image.file_path)
 
 def delete_product_image(db: Session, id: int):
     product_image = db.query(DbProductImage).filter(DbProductImage.id == id).first()
     if not product_image:
-        raise HTTPException(status_code=404, detail=f"Image with id '{id}' not found")
+        raise HTTPException(status_code=404, detail=f"Image with id {id} not found")
     db.delete(product_image)
     db.commit()
     raise HTTPException(status_code=status.HTTP_204_NO_CONTENT)

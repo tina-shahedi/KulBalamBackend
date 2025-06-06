@@ -52,7 +52,7 @@ def get_product_by_id(db: Session, id: int):
     if not product:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Product with id '{id}' not found."
+            detail=f'Product with id {id} not found.'
         )
     return product
 
@@ -61,7 +61,7 @@ def update_product(db: Session, id: int, product_name: str, description: str, pr
     if not product:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Product with id '{id}' not found."
+            detail=f'Product with id {id} not found.'
         )
 
     product.product_name = product_name
@@ -74,7 +74,7 @@ def update_product(db: Session, id: int, product_name: str, description: str, pr
 def delete_product(db: Session, id: int, current_user_id: int):
     product = db.query(DbProduct).filter(DbProduct.id == id).first()
     if product is None:
-        raise HTTPException(status_code=404, detail=f"Product with id '{id}' not found")
+        raise HTTPException(status_code=404, detail=f'Product with id {id} not found')
     if product.seller_id != current_user_id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You are not authorized to delete this product")
     db.delete(product)

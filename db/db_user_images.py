@@ -10,7 +10,7 @@ def upload_user_image(db: Session, user_id: int, image: UploadFile = File(...)):
     user = db.query(DbUser).filter(DbUser.id == user_id).first()
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"User with id '{user_id}' not found")
+            detail=f"User with id {user_id} not found")
 
     letters = string.ascii_letters
     rand_str = ''.join(random.choice(letters) for i in range(6)) #Generates 6 random letters for img name
@@ -35,14 +35,14 @@ def get_user_image(db: Session, id: int):
     if not user_image:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Image of user id '{id}' not found."
+            detail=f"Image of user id {id} not found."
         )
     return FileResponse(user_image.file_path)
 
 def delete_user_image(db: Session, id: int):
     user_image = db.query(DbUserImage).filter(DbUserImage.id == id).first()
     if not user_image:
-        raise HTTPException(status_code=404, detail=f"Image with id '{id}' not found")
+        raise HTTPException(status_code=404, detail=f"Image with id {id} not found")
     db.delete(user_image)
     db.commit()
     raise HTTPException(status_code=status.HTTP_204_NO_CONTENT)

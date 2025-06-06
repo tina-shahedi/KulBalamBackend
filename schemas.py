@@ -89,6 +89,8 @@ class  PostDisplay(BaseModel): #a data structure to send to the user when we are
     user_id : int
     images: List[ImageInPost] = []
     timestamp: datetime
+    like_count: int = 0  # number of likes on the post
+    is_liked_by_current_user: bool = False # whether the current user has liked the post
     class Config(): #convert instances of ORM models(db models) into dictionaries whrn serializing the data.
         from_attributes = True
 

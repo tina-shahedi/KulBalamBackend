@@ -1,6 +1,6 @@
 import datetime
 from fastapi import FastAPI, WebSocketDisconnect
-from router import join, user, userwall,comment, group, group_post, friendship, images, order_lines, orders, product, reviews, statistics, test_data
+from router import join, user, userwall,comment, group, group_post, friendship, images, order_lines, orders, product, reviews, statistics, test_data, post_likes
 from db import models
 from db.database import engine
 from auth import authentication
@@ -26,6 +26,7 @@ app.include_router(orders.router)
 app.include_router(order_lines.router)
 app.include_router(test_data.router)
 app.include_router(reviews.router)
+app.include_router(post_likes.router)
 
 #This enables comunication between localhost 8000 and 3000
 origins = ["*"]
