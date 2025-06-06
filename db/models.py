@@ -181,13 +181,14 @@ class DbProductReview(Base):
     creator_username = relationship ('DbUser', back_populates='review')
     product = relationship ('DbProduct', back_populates='reviews')
 
+#5a) Create a database model (table) for 'postlikes'
 class DbPostLike(Base):
     __tablename__ = 'post_likes'
 
     id = Column(Integer, primary_key=True, index=True)
-    post_id = Column(Integer, ForeignKey('posts.id'))
-    user_id = Column(Integer, ForeignKey('users.id'))
-    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    post_id = Column(Integer, ForeignKey('posts.id')) # a reference to a post, indicating which post was liked
+    user_id = Column(Integer, ForeignKey('users.id')) # a reference to the user, indicating who liked the post
+    created_at = Column(DateTime, default=datetime.datetime.utcnow) # a datetime field, indicating when a like was created
 
     post = relationship('DbPost', back_populates='likes')
     user = relationship('DbUser', back_populates='post_likes')

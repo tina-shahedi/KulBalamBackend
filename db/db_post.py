@@ -5,6 +5,7 @@ from schemas import PostBase, PostUpdate
 from fastapi import HTTPException, Response, status
 import datetime
 from typing import List
+from sqlalchemy.orm import joinedload
 
 def create_post(db: Session, request:PostBase):
     new_post = DbPost(
@@ -19,12 +20,12 @@ def create_post(db: Session, request:PostBase):
     return new_post
 
 def get_all(db: Session) -> List[DbPost]:
-    posts = db.query(DbPost).all()
+    posts = db.query(DbPost).options(joinedload(DbPost.likes)).all()
     return posts
 
 
 def get_post(db: Session, id:int):
-    post = db.query(DbPost).filter(DbPost.id == id).first()
+    post = db.query(DbPost).options(joinedload(DbPost.likes)).filter(DbPost.id == id).first()
     if not post:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
             detail= f'Post with id {id} not found')  #stop the code running

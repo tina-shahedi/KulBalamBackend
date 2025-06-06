@@ -82,6 +82,9 @@ class ImageInPost (BaseModel):
     class Config():
         from_attributes = True
 
+
+# 5d) The schemas model PostDisplay should be changed to be able to show how many 'likes' the post has 
+# and the code that produces posts to the front-end (e.g. swagger) should be adjusted to calculate this amount of likes per post.
 class  PostDisplay(BaseModel): #a data structure to send to the user when we are creating post
     id: int
     content: str
@@ -91,7 +94,7 @@ class  PostDisplay(BaseModel): #a data structure to send to the user when we are
     timestamp: datetime
     like_count: int = 0  # number of likes on the post
     is_liked_by_current_user: bool = False # whether the current user has liked the post
-    class Config(): #convert instances of ORM models(db models) into dictionaries whrn serializing the data.
+    class Config():
         from_attributes = True
 
 class PostUpdate(BaseModel):

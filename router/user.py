@@ -7,6 +7,7 @@ from db.database import get_db
 from db import db_user, db_user_images
 from auth.oauth2 import get_current_user
 from db.models import DbFriendship
+from router.post_likes import get_post_with_likes
 
 #User router
 
@@ -50,8 +51,9 @@ def delete_user(id:int, db:Session = Depends(get_db), current_user: UserBase = D
     return db_user.delete_user(db, id)
 
 @router.get("/{id}/posts", response_model=List[PostDisplay])
-def get_posts_by_user(id: int, db: Session = Depends(get_db)):
-    return db_user.get_posts_by_user_id(db, id)
+def get_posts_by_user(id: int, db: Session = Depends(get_db), current_user: UserBase = Depends(get_current_user)):
+    posts = db_user.get_posts_by_user_id(db, id)
+    return [get_post_with_likes(post, current_user.id) for post in posts]
 
 #Get product by user id
 @router.get('/{id}/products', response_model=UserProductDisplay)

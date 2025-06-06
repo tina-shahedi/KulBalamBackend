@@ -6,13 +6,14 @@ from db.database import get_db
 from db import models
 from typing import List
 from schemas import PostDisplay
-from auth.authentication import get_current_user
+from auth.oauth2 import get_current_user
 
 router = APIRouter(
     prefix='/post-likes',
     tags=['post-likes']
 )
 
+# 5b) A user should be able to 'like' another users posts (not his own)
 @router.post('/{post_id}/like')
 def like_post(post_id: int, db: Session = Depends(get_db), current_user: models.DbUser = Depends(get_current_user)):
     # Check if post exists
@@ -45,6 +46,7 @@ def like_post(post_id: int, db: Session = Depends(get_db), current_user: models.
     
     return {"message": "Post liked successfully"}
 
+#5c) A user should be able to 'unlike' any post he has an active 'like' on.
 @router.delete('/{post_id}/unlike')
 def unlike_post(post_id: int, db: Session = Depends(get_db), current_user: models.DbUser = Depends(get_current_user)):
     # Check if like exists
